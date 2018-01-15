@@ -1,4 +1,4 @@
-[gosho]
+#gosho
 
 rewrite of `neet`
 
