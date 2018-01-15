@@ -32,14 +32,14 @@ func (db *DB) AllShows() ([]*Show, error) {
 }
 
 func (db *DB) LoadShow(ID int32) (*Show, error) {
-	var show *Show
-	row := db.QueryRow("SELECT * FROM shows WHERE ID = ?", ID)
-	err := row.Scan(&show.ID, &show.Name, &show.Season, &show.Episode)
+	sh := new(Show)
+	r := db.QueryRow("SELECT * FROM shows WHERE ID = ?", ID)
+	err := r.Scan(&sh.ID, &sh.Name, &sh.Season, &sh.Episode)
 	if err != nil {
 		return nil, err
 	}
 
-	return show, nil
+	return sh, nil
 
 }
 

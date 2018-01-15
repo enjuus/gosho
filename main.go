@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/enjuus/sl/models"
+	"github.com/enjuus/gosho/models"
 	flag "github.com/ogier/pflag"
 	"log"
 	"os"
@@ -97,10 +97,10 @@ func main() {
 			sh.Episode = episode
 		}
 
-		err = env.db.UpdateShow(sh.ID, sh.Name, sh.Season, sh.Episode)
+		/*err = env.db.UpdateShow(sh.ID, sh.Name, sh.Season, sh.Episode)
 		if err != nil {
 			log.Panic(err)
-		}
+		}*/
 
 	}
 }
