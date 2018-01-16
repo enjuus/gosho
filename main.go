@@ -12,6 +12,7 @@ var (
 	help    bool
 	list    bool
 	add     bool
+	del     int32
 	update  bool
 	name    string
 	season  int32
@@ -29,15 +30,15 @@ func init() {
 	flag.BoolVarP(&add, "add", "a", false, "Add show, specifiend with --name, --season, --episode.")
 	flag.BoolVarP(&update, "update", "u", false, "Update show, specifiend with --name, --season, --episode.")
 	flag.StringVarP(&name, "name", "n", "", "The name of the show")
-	flag.Int32VarP(&season, "season", "s", 1, "The season of the show")
-	flag.Int32VarP(&episode, "episode", "e", 1, "The episode of the show")
+	flag.Int32VarP(&season, "season", "s", 0, "The season of the show")
+	flag.Int32VarP(&episode, "episode", "e", 0, "The episode of the show")
 	flag.Int32VarP(&id, "id", "i", 0, "The ID of the entry")
+	flag.Int32VarP(&del, "del", "d", 0, "The ID of the entry to delete")
 	flag.Parse()
 }
 
 func main() {
 	// output help
-	fmt.Println(name, season, episode, id)
 	if help == true {
 		PrintHelpMessage()
 		os.Exit(0)
@@ -57,7 +58,7 @@ func main() {
 		}
 
 		for _, sh := range shws {
-			fmt.Println(sh.ID, sh.Name, "-", "s", sh.Season, "e", sh.Episode)
+			fmt.Printf("%d - %s s%de%d\n", sh.ID, sh.Name, sh.Season, sh.Episode)
 		}
 	}
 
@@ -68,6 +69,13 @@ func main() {
 		}
 
 		err := env.db.AddShow(name, season, episode)
+		if err != nil {
+			log.Panic(err)
+		}
+	}
+
+	if del > 0 {
+		err := env.db.DeleteShow(del)
 		if err != nil {
 			log.Panic(err)
 		}
@@ -89,18 +97,18 @@ func main() {
 			sh.Name = name
 		}
 
-		if season <= 0 {
+		if season > 0 {
 			sh.Season = season
 		}
 
-		if episode <= 0 {
+		if episode > 0 {
 			sh.Episode = episode
 		}
 
-		/*err = env.db.UpdateShow(sh.ID, sh.Name, sh.Season, sh.Episode)
+		err = env.db.UpdateShow(sh.ID, sh.Name, sh.Season, sh.Episode)
 		if err != nil {
 			log.Panic(err)
-		}*/
+		}
 
 	}
 }

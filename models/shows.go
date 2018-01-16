@@ -58,12 +58,26 @@ func (db *DB) AddShow(Name string, Season int32, Episode int32) error {
 }
 
 func (db *DB) UpdateShow(ID int32, Name string, Season int32, Episode int32) error {
-	stmt, err := db.Prepare("UPDATE shows (Name, Season, Epsiode) values (?, ?, ?) WHERE ID = ?")
+	stmt, err := db.Prepare("UPDATE shows SET Name = ?, Season = ?, Episode = ? WHERE ID = ?")
 	if err != nil {
 		return err
 	}
 
 	_, err = stmt.Exec(Name, Season, Episode, ID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (db *DB) DeleteShow(ID int32) error {
+	stmt, err := db.Prepare("DELETE FROM shows WHERE ID = ?")
+	if err != nil {
+		return err
+	}
+
+	_, err = stmt.Exec(ID)
 	if err != nil {
 		return err
 	}

@@ -10,6 +10,7 @@ type Datastore interface {
 	AddShow(Name string, Season int32, Episode int32) error
 	UpdateShow(ID int32, Name string, Season int32, Episode int32) error
 	LoadShow(ID int32) (*Show, error)
+	DeleteShow(ID int32) error
 }
 
 type DB struct {
