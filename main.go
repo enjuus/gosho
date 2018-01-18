@@ -14,6 +14,8 @@ var (
 	add     bool
 	del     int32
 	update  bool
+  next    int32
+  prev    int32
 	name    string
 	season  int32
 	episode int32
@@ -34,6 +36,8 @@ func init() {
 	flag.Int32VarP(&episode, "episode", "e", 0, "The episode of the show")
 	flag.Int32VarP(&id, "id", "i", 0, "The ID of the entry")
 	flag.Int32VarP(&del, "del", "d", 0, "The ID of the entry to delete")
+	flag.Int32VarP(&next, "next", "q", 0, "The ID of the entry to +1")
+	flag.Int32VarP(&prev, "prev", "p", 0, "The ID of the entry to -1")
 	flag.Parse()
 }
 
@@ -80,6 +84,20 @@ func main() {
 			log.Panic(err)
 		}
 	}
+
+  if next > 0 {
+    err := env.db.NextEpisode(next)
+    if err != nil {
+      log.Panic(err)
+    }
+  }
+
+  if prev > 0 {
+    err := env.db.PreviousEpisode(prev)
+    if err != nil {
+      log.Panic(err)
+    }
+  }
 
 	if update == true {
 		if id <= 0 {
